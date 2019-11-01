@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+  <link rel="shortcut icon" href="../../public/img/milan.ico"/>
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  {{block 'head'}}{{/block}}
+  <!-- 可以用来填充样式什么的 -->
+</head>
+<body style="background: url('../../public/img/bgc.jpg');background-size:100% 100%;background-repeat:no-repeat;background-attachment: fixed;">
+
+{{include '../partials/header.html'}}
+
+{{block 'content'}}
+<!-- 默认内容 -->
+<h1>hello {{name}}</h1>
+{{/block}}
+
+{{include '../partials/footer.html'}}
+</body>
+</html>

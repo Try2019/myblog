@@ -1,0 +1,203 @@
+{{extend './_layout/layout.html'}}
+
+{{block 'head'}}
+<style>
+  .bigContainer{
+    margin-left: 100px;
+    width: 1300px;
+    display: flex;
+  }
+  .container{
+    min-height: 700px;
+    flex: 7;
+    margin: 0 20px;
+  }
+  .nav{
+    margin-top: 20px;
+    height: 40px;
+    background: #d1ebc4;
+  }
+  .nav>a{
+    line-height: 40px;
+    margin: 4px 15px;
+    font-size: 16px;
+    padding: 8px 10px;
+    border-radius: 3px;
+  }
+  .nav>a:hover{
+    text-decoration: none;
+    background: #ffb16b;
+  }
+  .active{
+    background: #ffb16b;
+  }
+  .user{
+    border-bottom: 1px solid #ccc;
+    background:whitesmoke;
+    padding: 5px;
+  }
+  .user:hover{
+    background: #ddd;
+  }
+  .user img{
+    width: 40px;
+    height: 40px;
+  }
+  .readNum{
+    margin: 0 6px;
+  }
+  .date{
+    font-size: 12px;
+    padding-top: 10px;
+    float: right;
+  }
+  .other{
+    flex: 2;
+    margin: 20px 20px;
+  }
+  .header{
+    padding: 10px;
+    line-height: 20px;
+    background: #d1ebc4;
+    border-radius: 3px 3px 0 0;
+  }
+  .content{
+    padding: 14px;
+    margin-bottom: 14px;
+    background: white;
+  }
+  .page{
+    background: whitesmoke;
+    overflow: hidden;
+    padding: 2px 5px;
+  }
+  .page>li{
+    float:left;
+    list-style: none;
+    margin: 6px 0;
+    padding: 6px 14px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+  }
+  .page>li:hover{
+    background: #ffb16b;
+  }
+  .imgLink img{
+    width: 160px;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+</style>
+{{/block}}
+
+{{block 'content'}}
+<div class="bigContainer">
+  <div class="container">
+    <div class="nav">
+      <a href="?tag=all" class="active">全部</a>
+      <a href="?tag=mostClick">精华</a>
+      <a href="?tag=share">分享</a>
+      <a href="?tag=qanda">问答</a>
+      <a href="?tag=employ">招聘</a>
+      <a href="?tag=test">客户端测试</a>
+    </div>
+    <div class="comments">
+      {{each topics}}
+      <div class="user">
+        <a href="/user/{{$value.User}}" title="{{$value.User}}">
+          {{if $value.avatar}}
+          <img src="../{{$value.avatar}}">
+          {{else}}
+          <img src="../public/img/avatar-default.png">
+          {{/if}}
+        </a>
+        <span class="readNum">0/{{$value.Click}}</span>
+        {{if $value.Type==='share'}}
+        <span class="badge">分享</span>
+        {{else if $value.Type==='qanda'}}
+        <span class="badge">问答</span>
+        {{else if $value.Type==='employ'}}
+        <span class="badge">招聘</span>
+        {{else}}
+        <span class="badge">客户端测试</span>
+        {{/if}}
+
+        <a href="/topic/{{$value.id}}">{{$value.Topic}}</a>
+        <span class="date">{{$value.ModifyTime.toLocaleString()}}</span>
+      </div>
+      {{/each}}
+      <div class="user">
+        <a href="#"><img src="../public/img/bradpitt.PNG"></a>
+        <span class="readNum">0/206</span>
+        <span class="badge">分享</span>
+        <a href="#">在 GitHub 上搭建博客</a>
+        <span class="date">8天前</span>
+      </div>
+
+      <ul class="page">
+        <li><a href="javascript:;">«</a></li>
+        <li><a href="javascript:;">1</a></li>
+        <li><a href="javascript:;">2</a></li>
+        <li><a href="javascript:;">3</a></li>
+        <li><a href="javascript:;">4</a></li>
+        <li><a href="javascript:;">5</a></li>
+        <li><a href="javascript:;">...</a></li>
+        <li><a href="javascript:;">»</a></li>
+      </ul>
+
+    </div>
+  </div>
+  <div class="other">
+    <div class="header">
+      <span>个人信息</span>
+    </div>
+    <div class="content">
+      <p style="text-align: center">
+        {{if user&&user.avatar}}
+        <img src="../{{user.avatar}}" width="180" height="180" style="display: block;margin: auto">
+        {{else}}
+        <img src="../public/img/avatar-default.png" width="180" height="180" style="display: block;margin: auto">
+        {{/if}}
+        {{if user&&user.name}}
+        <span style="color: #999;font-size: 18px;">{{user.name}}</span>
+        {{else}}
+        <span style="color: #999;font-size: 18px;">请先登录</span>
+        {{/if}}
+      </p>
+      {{if user&&user.bio}}
+      <p style="font-size: 12px"><i>"{{user.bio||'请先登录'}}"</i></p>
+      {{else}}
+      <p style="font-size: 12px"><i>"这个人很懒，什么也没留下"</i></p>
+      {{/if}}
+    </div>
+
+    <div class="content">
+      <a class="btn btn-success" href="/sentMessage">发布话题</a>
+    </div>
+
+    <div class="header">
+      <span>友情社区</span>
+    </div>
+    <div class="content">
+      <p class="imgLink">
+        <a href="https://cnodejs.org/" target="_blank">
+          <img src="../public/img/cnode.PNG">
+        </a>
+      </p>
+      <p class="imgLink">
+        <a href="https://www.runoob.com/" target="_blank">
+          <img src="../public/img/runoob.PNG">
+        </a>
+      </p>
+      <p class="imgLink">
+        <a href="https://www.bilibili.com/" target="_blank">
+          <img src="../public/img/bilibili.PNG">
+        </a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+{{/block}}

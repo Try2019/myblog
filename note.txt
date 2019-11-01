@@ -1,0 +1,64 @@
+1、path路径操作模块，require('path')，使用如下
+  path.pathname('C:/a/b/index.js')，会返回index.js
+  path.dirname('C:/a/b/index.js')，会返回C:/a/b
+  path.dirname('C:/a/b/index.js')，会返回当前路径的根路径，目录，扩展名等
+  path.parse('C:/a/b/b/c/c/index.js')返回{ root: 'C:/',dir: 'C:/a/b/b/c/c',base: 'index.js',ext: '.js',name: 'index' }
+  path.join('C:/a','b/c/c')返回'C:\\a\\b\\c\\c'  将两个路径合并成一个（在多个路径之间加入路径分隔符），支持任意个参数
+
+2、node中的其他非模块成员：在每个模块中除了require，exports等模块相关API之外还有两个特殊的变量成员：
+  __dirname（可以用来动态获取当前文件模块所属目录绝对路径），__filename（获取当前文件绝对路径）
+  在文件操作中使用相对路径是不可靠的，因为在node中文件操作的路径被设计为相对于执行node的终端所在路径，为了避免这个问题，
+  将相对路径替换为绝对路径即可，__dirname和__filename不受node路径影响
+  但是模块中的路径（require的相对路径）标识与上述的路径没有关系，不受影响（只相对于当前文件模块）
+
+3、art-template模板继承：在需要添加子模块的页面中使用：{{include './header.html'}}，通常用于页面底部与头部，
+  include表示包括什么模块，extend表示引用什么模块
+  {{extend './layout.html'}}   这样会把layout拿出来作为index的内容
+
+  使用公共模板：{{block 'name'}}  {{/block}}   在layout和index都写，会将index中的block中的内容填充到layout中的block中
+  需要在index中也引用{{block 'name'}}  {{/block}}，然后在block中添加内容
+  好处：当layout.html使用bootstrap等外部模块时，其他的HTML就可以直接继承
+
+4、express提供了一个响应方法：json，该方法接受一个对象作为参数，它会自动帮你将对象转为字符串再发给浏览器
+
+5、密码使用md5加密：
+  npm install blueimp-md5
+  使用：let md5=require('blueimp-md5')           password=md5(md5(password))，一般不止加一层
+  只能正向加密，不能反向解密，开发人员也不会知道你的密码是什么
+
+6、表单具有默认的提交行为，默认是同步的，同步表单提交，浏览器会被锁死等待服务器的响应结果；表单的同步提交后，无论服务端响应什么，
+  都会用响应结果覆盖当前页面
+  服务端重定向针对异步请求无效：response.redirect('/')只针对同步请求有效，这时就只能客户端进行重定向：window.location.href=''
+
+7、http是无状态的，需要你自己记住你自己
+  cookie：可以用来保存一些不太敏感的数据，但是不能保存用户登陆状态（如isVIP:true），可以用来记住用户名，购物车等
+  Session：记录一些敏感记录（下面以超市举例）
+  session是基于cookie来实现的
+  电子柜（服务端）      你（客户端）-->使用二维码小票（cookie），凭证是唯一的，不可能重复，一旦丢失，你的状态也就丢失了
+  由于凭证是服务端给的，所以比较安全，不太容易伪造，这时候就可以将一些敏感的数据保存在服务端，客户端只需要拿着凭证即可
+
+  使用session就是帮助我们管理一些敏感信息数据状态，比如保存登陆状态；
+  写session：request.session.user=xx       读session：request.session.user
+  删除session：request.session.user=null（不严谨）    更严谨的做法：delete request.session.user
+
+8、在express框架中默认不支持cookie和session，但是我们可以使用第三方中间件express-session来解决：
+  npm install express-session
+  配置：
+  var session = require('express-session')
+  app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+  }))
+  而且一定要在app.use(router)之前
+  使用：当配置好以后，就可以通过request.session来访问和设置session成员了：
+  添加session数据：request.session.foo='bar'
+  访问session数据：request.session.foo
+  cookie过期，则session也就过期了
+  session默认在内存中存储，服务器一重启，session就会丢失，一般真正的生产环境会把session进行持久化存储
+
+9、在node中没有全局作用域，只有文件模块作用域，模块是独立的，不能因为a加载了fs而b就不需要加载fs；
+  正确做法应为：a需要fs则a就加载fs，b需要fs则b加载fs
+
+10、表单提交：实质是字符串交互，请求（报文，具有一定格式的字符串），http就是web的沟通语言，服务器响应（字符串），
+  服务端使用重定向对于异步请求无效

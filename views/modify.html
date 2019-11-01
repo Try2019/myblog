@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <style>
+      body{
+        background: #e6f8e5;
+      }
+      .container{
+        min-height: 720px;
+      }
+    </style>
+</head>
+<body>
+
+{{include './partials/header.html'}}
+
+<div class="container">
+  <h3>修改信息</h3>
+  <form role="form" action="/modify" method="post" enctype="multipart/form-data">
+    <div style="display: flex">
+      <div class="form-group" style="flex: 5;margin-right: 80px">
+        <label for="email">邮箱</label>
+        <input type="text" class="form-control" id="email" name="email" value="{{user&&user.email}}"
+               disabled placeholder="Email">
+        <br>
+        <label for="nickname">昵称</label>
+        <input type="text" class="form-control" id="nickname" name="nickname" value="{{user&&user.name}}"
+               readonly placeholder="Nickname">
+      </div>
+      <div class="form-group" style="flex: 1;text-align: center">
+        <img src="../public/img/avatar-default.PNG" width="80px" height="90px" style="margin-bottom: 5px"><br>
+        <label for="avatar">修改头像</label>
+        <input type="file" id="avatar" name="avatar" style="width: 200px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>性别</label><br>
+      {{if user.gender}}
+      <input type="radio" name="sex" value="1" checked>男<br>
+      <input type="radio" name="sex" value="0">女
+      {{else}}
+      <input type="radio" name="sex" value="1">男<br>
+      <input type="radio" name="sex" value="0" checked>女
+      {{/if}}
+    </div>
+    <div class="form-group">
+      <label for="birthday">生日</label>
+      <input type="date" class="form-control" id="birthday" name="birthday"
+             value="{{user&&(user.birthday)}}"
+             placeholder="Birthday">
+    </div>
+    <div class="form-group">
+      <label for="bio">简介</label>
+      <textarea class="form-control" id="bio" name="bio" rows="6"
+                placeholder="Bio...">{{user&&user.bio}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-success">提交</button>
+  </form>
+
+</body>
+</html>

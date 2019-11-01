@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sentMessage</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <style>
+      .container{
+        min-height: 600px;
+      }
+    </style>
+</head>
+<body>
+
+{{include '../partials/header.html'}}
+<div class="container">
+  <h3>发布评论</h3>
+  <form method="post" action="/sentMessage" role="form">
+    <div class="form-group">
+      <label for="type">选择版块：</label>
+      <select id="type" name="type" class="form-control">
+        <option value="share">分享</option>
+        <option value="qanda">问答</option>
+        <option value="employ">招聘</option>
+        <option value="test">客户端测试</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="topic">标题：</label>
+        <input type="text" name="topic" class="form-control" id="topic" placeholder="Topic..." required>
+    </div>
+    <div class="form-group">
+      <label for="content">内容：</label>
+        <textarea id="content" name="content" class="form-control"
+                  placeholder="Contents..." rows="6"></textarea>
+    </div>
+    <p style="color:red">{{mes}}</p>
+    <input type="submit" class="btn btn-info" value="发表">
+  </form>
+</div>
+
+{{include '../partials/footer.html'}}
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+{{extend './_layout/layout.html'}}
+
+{{block 'head'}}
+<style>
+  body{
+    margin:0;
+    padding:0;
+    background: url(../public/img/bgc.jpg);
+    background-size:100% 100%;
+    background-repeat:no-repeat;
+  }
+  .container{
+    display: flex;
+    align-content: center;
+    min-height: 720px;
+    width: 88%;
+  }
+  .user{
+    flex: 7;
+    margin: 20px 10px;
+  }
+  .other{
+    flex: 2;
+    margin: 20px 20px;
+  }
+  .header{
+    padding: 10px;
+    line-height: 20px;
+    background: #ee9b43;
+    border-radius: 3px 3px 0 0;
+  }
+  .content{
+    padding: 14px;
+    margin-bottom: 14px;
+    background: white;
+  }
+  .imgLink img{
+    width: 160px;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+</style>
+{{/block}}
+
+
+{{block 'content'}}
+<div class="container">
+  <div class="user">
+    <div class="header">
+      <a href="/" style="color: #f7f5ff">主页/</a>
+    </div>
+    <div class="content">
+      <p>
+        <img src="../{{tuser.avatar}}" width="40" height="40">
+        <span style="vertical-align: 5px">{{tuser.name}}</span>
+      </p>
+      <p>邮箱：{{tuser.Email}}</p>
+      <p style="color: #bbb;font-size: 15px">创建时间：{{tuser.createTime.toLocaleString()}}</p>
+    </div>
+
+    <div class="header">
+      <span>最近创建的话题</span>
+    </div>
+    <div class="content">
+      {{if topics}}
+      {{each topics}}
+      <div class="topics">
+        <img src="../../{{$value.avatar}}" width="40" height="40">
+        <span style="line-height: 40px">
+          <span style="margin-left: 5px">0/{{$value.Click}}</span>
+          <a href="/topic/{{$value.id}}" style="margin-left: 5px">{{$value.Topic}}</a>
+          <span style="float: right;margin-left: 5px;">{{$value.ModifyTime.toLocaleString()}}</span>
+        </span>
+      </div>
+      {{/each}}
+      {{else}}
+      <span>无话题</span>
+      {{/if}}
+    </div>
+
+    <div class="header">
+      <span>最近参与的话题</span>
+    </div>
+    <div class="content">
+      <span>无话题</span>
+    </div>
+  </div>
+  <div class="other">
+    <div class="header">
+      <span>个人信息</span>
+    </div>
+    <div class="content">
+      <p>
+        <img src="../{{tuser.avatar}}" width="60" height="60">
+        <span style="color: #999;font-size: 18px">{{tuser.name}}</span>
+      </p>
+      <p style="font-size: 12px"><i>"{{tuser.bio}}"</i></p>
+    </div>
+
+    <div class="content">
+      <a class="btn btn-success" href="/sentMessage">发布话题</a>
+    </div>
+
+    <div class="header">
+      <span>友情社区</span>
+    </div>
+    <div class="content">
+      <p class="imgLink">
+        <a href="https://cnodejs.org/" target="_blank">
+          <img src="../public/img/cnode.PNG">
+        </a>
+      </p>
+      <p class="imgLink">
+        <a href="https://www.runoob.com/" target="_blank">
+          <img src="../public/img/runoob.PNG">
+        </a>
+      </p>
+      <p class="imgLink">
+        <a href="https://www.bilibili.com/" target="_blank">
+          <img src="../public/img/bilibili.PNG">
+        </a>
+      </p>
+    </div>
+
+  </div>
+</div>
+{{/block}}
